@@ -29,8 +29,8 @@ pipeline {
           sh """
           ssh -o StrictHostKeyChecking=no ec2-user@${WORKLOAD_IP} '
             cd /home/ec2-user &&
-            docker compose down || true &&
-            docker compose up -d
+            docker-compose down || true &&
+            docker-compose up -d
           '
           """
         }
