@@ -15,7 +15,7 @@ pipeline {
 
     stage('Copy Files to EC2') {
       steps {
-        sshagent(['workloads-ssh']) {
+        sshagent(['ec2-deploy-key']) {
           sh """
           scp -o StrictHostKeyChecking=no -r docker-compose.yml app ec2-user@${WORKLOAD_IP}:/home/ec2-user/
           """
@@ -25,7 +25,7 @@ pipeline {
 
     stage('Deploy App') {
       steps {
-        sshagent(['workloads-ssh']) {
+        sshagent(['ec2-deploy-key']) {
           sh """
           ssh -o StrictHostKeyChecking=no ec2-user@${WORKLOAD_IP} '
             cd /home/ec2-user &&
