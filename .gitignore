@@ -6,7 +6,6 @@
 .project
 .skaffold-*.yaml
 .terraform.lock.hcl
-.terraform/*
 .venv/
 .vs/
 .vscode/
@@ -15,8 +14,6 @@
 *.iws
 *.pyc
 *.swp
-*.tfstate*
-*.tfvars
 *~
 bin/
 build/
@@ -26,7 +23,7 @@ obj/
 pkg/
 release/wi-kubernetes-manifests.yaml
 vendor/
-*/.terraform/*
-*.tfstate
-*.tfstate.*
+.terraform
+terraform.tfstate
+terraform.tfstate.backup
 .terraform.lock.hcl
