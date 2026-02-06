@@ -1,0 +1,54 @@
+version: ''
+
+services:
+
+  productcatalogservice:
+    build: ./src/productcatalogservice
+    container_name: productcatalog
+    ports:
+      - "3550:3550"
+
+  cartservice:
+    build: ./src/cartservice/src
+    container_name: cartservice
+    ports:
+      - "7070:7070"
+
+  frontend:
+    build: ./src/frontend
+    container_name: frontend
+    ports:
+      - "80:8080"
+    depends_on:
+      - productcatalogservice
+      - cartservice
+    environment:
+      PRODUCT_CATALOG_SERVICE_ADDR: "productcatalog:3550"
+      CART_SERVICE_ADDR: "cartservice:7070"
+
+      # Dummy values for ALL removed services (frontend requires them)
+      AD_SERVICE_ADDR: "disabled"
+      CHECKOUT_SERVICE_ADDR: "disabled"
+      CURRENCY_SERVICE_ADDR: "disabled"
+      EMAIL_SERVICE_ADDR: "disabled"
+      PAYMENT_SERVICE_ADDR: "disabled"
+      SHIPPING_SERVICE_ADDR: "disabled"
+      RECOMMENDATION_SERVICE_ADDR: "disabled"
+      SHOPPING_ASSISTANT_SERVICE_ADDR: "disabled"
+
+      # Explicit feature flags
+      ENABLE_ADS: "false"
+      ENABLE_CHECKOUT: "false"
+      ENABLE_CURRENCY: "false"
+      ENABLE_EMAIL: "false"
+      ENABLE_PAYMENT: "false"
+      ENABLE_SHIPPING: "false"
+      ENABLE_RECOMMENDATIONS: "false"
+      ENABLE_SHOPPING_ASSISTANT: "false"
+
+      DISABLE_CURRENCY_SERVICE: "true"
+      DEFAULT_CURRENCY: "USD"
+      DISABLE_CURRENCY_CONVERSION: "true"
+
+
+      
