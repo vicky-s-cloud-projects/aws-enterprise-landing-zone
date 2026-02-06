@@ -26,7 +26,7 @@ obj/
 pkg/
 release/wi-kubernetes-manifests.yaml
 vendor/
-**/.terraform/*
+*/.terraform/*
 *.tfstate
 *.tfstate.*
 .terraform.lock.hcl
