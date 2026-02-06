@@ -9,7 +9,7 @@ pipeline {
 
     stage('Checkout') {
       steps {
-        git 'git@github.com:vicky-s-cloud-projects/aws-enterprise-landing-zone.git'
+        git branch: 'main', url: 'git@github.com:vicky-s-cloud-projects/aws-enterprise-landing-zone.git'
       }
     }
 
