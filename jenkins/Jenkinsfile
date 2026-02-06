@@ -1,0 +1,40 @@
+pipeline {
+  agent any
+
+  environment {
+    WORKLOAD_IP = "18.134.16.172"
+  }
+
+  stages {
+
+    stage('Checkout') {
+      steps {
+        git 'git@github.com:vicky-s-cloud-projects/aws-enterprise-landing-zone.git'
+      }
+    }
+
+    stage('Copy Files to EC2') {
+      steps {
+        sshagent(['workloads-ssh']) {
+          sh """
+          scp -o StrictHostKeyChecking=no -r docker-compose.yml app ec2-user@${WORKLOAD_IP}:/home/ec2-user/
+          """
+        }
+      }
+    }
+
+    stage('Deploy App') {
+      steps {
+        sshagent(['workloads-ssh']) {
+          sh """
+          ssh -o StrictHostKeyChecking=no ec2-user@${WORKLOAD_IP} '
+            cd /home/ec2-user &&
+            docker compose down || true &&
+            docker compose up -d
+          '
+          """
+        }
+      }
+    }
+  }
+}
