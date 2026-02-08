@@ -13,6 +13,39 @@ pipeline {
       }
     }
 
+    stage('Terraform Format') {
+      steps {
+        sh '''
+          cd terraform
+          terraform fmt -check -recursive
+        '''
+      }
+    }
+
+    stage('Terraform Validate') {
+      steps {
+        sh '''
+          cd terraform
+          terraform init -backend=false
+          terraform validate
+        '''
+      }
+    }
+
+    stage('Terraform Security Scan (Checkov)') {
+      steps {
+        sh '''
+          cd terraform
+          checkov -d . \
+            --framework terraform \
+            --download-external-modules true \
+            --soft-fail false \
+            --severity-level HIGH
+        '''
+      }
+    }
+
+
     stage('Copy Files to EC2') {
       steps {
         sshagent(['ec2-deploy-key']) {
@@ -38,4 +71,5 @@ pipeline {
     }
   }
 }
+
 
