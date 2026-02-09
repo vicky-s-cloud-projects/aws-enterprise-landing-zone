@@ -27,3 +27,6 @@ vendor/
 terraform.tfstate
 terraform.tfstate.backup
 .terraform.lock.hcl
+terraform.tfstate.1770497597.backup
+terraform.tfstate.1770497705.backup
+terraform.tfstate.1770497962.backup
