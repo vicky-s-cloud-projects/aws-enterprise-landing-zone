@@ -66,19 +66,19 @@ data "aws_iam_policy_document" "cloudtrail_policy" {
     sid = "AllowManagementAccountRead"
 
     principals {
-        type        = "AWS"
-        identifiers = ["arn:aws:iam::138973099853:root"]
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::138973099853:root"]
     }
 
     actions = [
-        "s3:GetBucketPolicy",
-        "s3:GetBucketVersioning",
-        "s3:GetBucketPublicAccessBlock",
-        "s3:ListBucket"
+      "s3:GetBucketPolicy",
+      "s3:GetBucketVersioning",
+      "s3:GetBucketPublicAccessBlock",
+      "s3:ListBucket"
     ]
 
     resources = [
-        aws_s3_bucket.central_logs.arn
+      aws_s3_bucket.central_logs.arn
     ]
   }
 
@@ -89,6 +89,6 @@ resource "aws_s3_bucket_policy" "logs" {
 
   bucket = aws_s3_bucket.central_logs.id
   policy = data.aws_iam_policy_document.cloudtrail_policy.json
-  
+
 
 }

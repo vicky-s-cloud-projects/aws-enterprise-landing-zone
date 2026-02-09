@@ -38,9 +38,9 @@ resource "aws_security_group" "jenkins" {
 }
 
 resource "aws_instance" "jenkins" {
-  ami           = data.aws_ami.amazon_linux.id
-  instance_type = "t2.micro"
-  key_name      = "landing-zone-key"
+  ami                    = data.aws_ami.amazon_linux.id
+  instance_type          = "t2.micro"
+  key_name               = "landing-zone-key"
   vpc_security_group_ids = [aws_security_group.jenkins.id]
 
   user_data = <<EOF
