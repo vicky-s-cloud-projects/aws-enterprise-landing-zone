@@ -1,6 +1,6 @@
 resource "aws_cloudtrail" "org_trail" {
-  name                          = "organization-trail"
-  s3_bucket_name                = aws_s3_bucket.central_logs.id
+  name           = "organization-trail"
+  s3_bucket_name = aws_s3_bucket.central_logs.id
 
   is_organization_trail         = true
   is_multi_region_trail         = true
@@ -11,7 +11,7 @@ resource "aws_cloudtrail" "org_trail" {
   kms_key_id = aws_kms_key.cloudtrail.arn
 
   cloud_watch_logs_group_arn = aws_cloudwatch_log_group.cloudtrail.arn
-  cloud_watch_logs_role_arn = aws_iam_role.cloudtrail_logs_role.arn
+  cloud_watch_logs_role_arn  = aws_iam_role.cloudtrail_logs_role.arn
 }
 
 resource "aws_kms_key" "cloudtrail" {
@@ -31,9 +31,9 @@ resource "aws_iam_role" "cloudtrail_logs_role" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Effect = "Allow"
+      Effect    = "Allow"
       Principal = { Service = "cloudtrail.amazonaws.com" }
-      Action = "sts:AssumeRole"
+      Action    = "sts:AssumeRole"
     }]
   })
 }
