@@ -24,14 +24,14 @@ resource "aws_security_group" "web" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["122.177.245.110/32"]
   }
 
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["122.177.245.110/32"]
   }
 
   egress {
@@ -61,8 +61,44 @@ EOF
   tags = {
     Name = "workloads-app"
   }
+
+  monitoring = true
+
+    metadata_options {
+    http_tokens = "required"
+    }
+
+    root_block_device {
+    encrypted = true
+    }
+
 }
 
 output "app_public_ip" {
   value = aws_instance.app.public_ip
+}
+
+# create IAM role for instance
+resource "aws_iam_role" "ec2_role" {
+  name = "ec2-instance-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Principal = { Service = "ec2.amazonaws.com" }
+      Action = "sts:AssumeRole"
+    }]
+  })
+}
+
+resource "aws_iam_instance_profile" "ec2_profile" {
+  name = "ec2-instance-profile"
+  role = aws_iam_role.ec2_role.name
+}
+
+# Attach to your instance
+resource "aws_instance" "jenkins" {
+  …
+  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 }
