@@ -1,3 +1,7 @@
+resource "aws_sns_topic" "cloudtrail_alerts" {
+  name = "cloudtrail-alerts"
+}
+
 resource "aws_cloudtrail" "org_trail" {
   name           = "organization-trail"
   s3_bucket_name = aws_s3_bucket.central_logs.id
@@ -12,6 +16,8 @@ resource "aws_cloudtrail" "org_trail" {
 
   cloud_watch_logs_group_arn = aws_cloudwatch_log_group.cloudtrail.arn
   cloud_watch_logs_role_arn  = aws_iam_role.cloudtrail_logs_role.arn
+
+  sns_topic_name = aws_sns_topic.cloudtrail_alerts.name
 }
 
 resource "aws_kms_key" "cloudtrail" {
@@ -22,8 +28,10 @@ resource "aws_kms_key" "cloudtrail" {
 
 resource "aws_cloudwatch_log_group" "cloudtrail" {
   name              = "/aws/cloudtrail/organization"
-  retention_in_days = 90
+  retention_in_days = 365
+  kms_key_id        = aws_kms_key.cloudtrail.arn
 }
+
 
 resource "aws_iam_role" "cloudtrail_logs_role" {
   name = "cloudtrail-cloudwatch-role"
@@ -49,7 +57,8 @@ resource "aws_iam_role_policy" "cloudtrail_logs_policy" {
         "logs:CreateLogStream",
         "logs:PutLogEvents"
       ]
-      Resource = "*"
+      Resource = "${aws_cloudwatch_log_group.cloudtrail.arn}:*"
     }]
   })
 }
+

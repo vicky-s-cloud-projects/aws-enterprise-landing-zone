@@ -21,6 +21,7 @@ resource "aws_security_group" "web" {
   name = "workload-sg"
 
   ingress {
+    description = "SSH from trusted IP"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -28,6 +29,7 @@ resource "aws_security_group" "web" {
   }
 
   ingress {
+    description = "HTTP from trusted IP"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -35,6 +37,7 @@ resource "aws_security_group" "web" {
   }
 
   egress {
+    description = "Allow all outbound"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -50,6 +53,7 @@ resource "aws_instance" "app" {
 
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
   monitoring           = true
+  ebs_optimized        = true
 
   metadata_options {
     http_tokens = "required"

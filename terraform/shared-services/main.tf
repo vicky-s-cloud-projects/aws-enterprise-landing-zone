@@ -16,6 +16,7 @@ resource "aws_security_group" "jenkins" {
   name = "jenkins-sg"
 
   ingress {
+    description = "Jenkins UI from trusted IP"
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
@@ -23,6 +24,7 @@ resource "aws_security_group" "jenkins" {
   }
 
   ingress {
+    description = "SSH from trusted IP"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -45,6 +47,7 @@ resource "aws_instance" "jenkins" {
 
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
   monitoring           = true
+  ebs_optimized        = true
 
   metadata_options {
     http_tokens = "required"
