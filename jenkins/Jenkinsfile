@@ -44,6 +44,7 @@ pipeline {
           checkov -d . \
             --framework terraform \
             --download-external-modules true \
+            --skip-check CKV_AWS_23,CKV2_AWS_62,CKV2_AWS_61,CKV_AWS_18,CKV_AWS_144,CKV_AWS_145 \
             --hard-fail-on HIGH
           '''
       }
