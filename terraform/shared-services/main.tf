@@ -43,6 +43,17 @@ resource "aws_instance" "jenkins" {
   key_name               = "landing-zone-key"
   vpc_security_group_ids = [aws_security_group.jenkins.id]
 
+  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
+  monitoring           = true
+
+  metadata_options {
+    http_tokens = "required"
+  }
+
+  root_block_device {
+    encrypted = true
+  }
+
   user_data = <<EOF
 #!/bin/bash
 yum update -y
@@ -56,18 +67,8 @@ EOF
   tags = {
     Name = "jenkins-server"
   }
-
-  monitoring = true
-
-    metadata_options {
-    http_tokens = "required"
-    }
-
-    root_block_device {
-    encrypted = true
-    }
-
 }
+
 
 output "jenkins_ip" {
   value = aws_instance.jenkins.public_ip
@@ -80,9 +81,9 @@ resource "aws_iam_role" "ec2_role" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Effect = "Allow"
+      Effect    = "Allow"
       Principal = { Service = "ec2.amazonaws.com" }
-      Action = "sts:AssumeRole"
+      Action    = "sts:AssumeRole"
     }]
   })
 }
@@ -94,7 +95,6 @@ resource "aws_iam_instance_profile" "ec2_profile" {
 
 # Attach to your instance
 resource "aws_instance" "jenkins" {
-  …
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 }
 
