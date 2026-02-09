@@ -32,6 +32,7 @@ resource "aws_security_group" "jenkins" {
   }
 
   egress {
+    description = "Allow all outbound traffic"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -96,8 +97,4 @@ resource "aws_iam_instance_profile" "ec2_profile" {
   role = aws_iam_role.ec2_role.name
 }
 
-# Attach to your instance
-resource "aws_instance" "jenkins" {
-  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
-}
 

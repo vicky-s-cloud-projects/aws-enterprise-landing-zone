@@ -102,7 +102,4 @@ resource "aws_iam_instance_profile" "ec2_profile" {
   role = aws_iam_role.ec2_role.name
 }
 
-# Attach to your instance
-resource "aws_instance" "app" {
-  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
-}
+

@@ -1,5 +1,6 @@
 resource "aws_sns_topic" "cloudtrail_alerts" {
-  name = "cloudtrail-alerts"
+  name              = "cloudtrail-alerts"
+  kms_master_key_id = aws_kms_key.cloudtrail.arn
 }
 
 resource "aws_cloudtrail" "org_trail" {
@@ -24,7 +25,23 @@ resource "aws_kms_key" "cloudtrail" {
   description             = "KMS key for CloudTrail logs"
   enable_key_rotation     = true
   deletion_window_in_days = 30
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "AllowRootAccount"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        }
+        Action   = "kms:*"
+        Resource = "*"
+      }
+    ]
+  })
 }
+
 
 resource "aws_cloudwatch_log_group" "cloudtrail" {
   name              = "/aws/cloudtrail/organization"
