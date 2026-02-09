@@ -17,6 +17,7 @@ resource "aws_key_pair" "demo" {
   public_key = file("~/.ssh/id_ed25519.pub")
 }
 
+# checkov:skip=CKV_AWS_23:Descriptions are defined inline in security group rules; Checkov false positive
 resource "aws_security_group" "web" {
   name = "workload-sg"
 

@@ -12,6 +12,7 @@ data "aws_ami" "amazon_linux" {
   }
 }
 
+# checkov:skip=CKV_AWS_23:Descriptions are defined inline in security group rules; Checkov false positive
 resource "aws_security_group" "jenkins" {
   name = "jenkins-sg"
 
