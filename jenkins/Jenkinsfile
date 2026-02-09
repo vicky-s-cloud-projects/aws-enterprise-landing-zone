@@ -44,9 +44,8 @@ pipeline {
           checkov -d . \
             --framework terraform \
             --download-external-modules true \
-            --soft-fail false \
-            --severity-level HIGH
-        '''
+            --hard-fail-on HIGH
+          '''
       }
     }
 
