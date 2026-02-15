@@ -23,6 +23,10 @@ Real companies first build:
 
 This project replicates that enterprise foundation before deploying workloads.
 
+## Architecture Diagram
+<img width="972" height="768" alt="aws-enterprise-landing-zone (2)" src="https://github.com/user-attachments/assets/37c2aa9f-d259-409a-8881-d4d870b182fe" />
+
+
 ## High-Level Architecture
 **Accounts Used**
 
